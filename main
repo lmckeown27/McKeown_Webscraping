@@ -1,1 +1,18 @@
 # File created by Liam McKeown
+# Video that helped me: https://www.youtube.com/watch?v=O6nnVHPjcJU
+
+'''
+Small goal: Organize #1 draft picks by college 
+
+Reach goal: Organize draft picks by combination of points, rebounds, and assists 
+'''
+
+import requests
+from bs4 import BeautifulSoup
+
+res = requests.get("https://www.basketball-reference.com/draft/")
+soup = BeautifulSoup(res.text, "html.parser")
+
+res = soup.table
+
+print(res.get_text())
