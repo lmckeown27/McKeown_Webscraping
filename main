@@ -1,5 +1,6 @@
 # File created by Liam McKeown
 # Video that helped me: https://www.youtube.com/watch?v=O6nnVHPjcJU
+# Website that helped me: https://beautiful-soup-4.readthedocs.io/en/latest/#making-the-soup
 
 '''
 Small goal: Organize #1 draft picks by college 
@@ -12,7 +13,130 @@ from bs4 import BeautifulSoup
 
 res = requests.get("https://www.basketball-reference.com/draft/")
 soup = BeautifulSoup(res.text, "html.parser")
+table = soup.table
 
-res = soup.table
+player_stats_url = [
+    'https://www.basketball-reference.com/players/b/banchpa01.html'
+    'https://www.basketball-reference.com/players/c/cunnica01.html'
+    'https://www.basketball-reference.com/players/e/edwaran01.html'
+    'https://www.basketball-reference.com/players/w/willizi01.html'
+    'https://www.basketball-reference.com/players/a/aytonde01.html'
+    'https://www.basketball-reference.com/players/f/fultzma01.html'
+    'https://www.basketball-reference.com/players/s/simmobe01.html'
+    'https://www.basketball-reference.com/players/t/townska01.html'
+    'https://www.basketball-reference.com/players/w/wiggian01.html'
+    'https://www.basketball-reference.com/players/b/bennean01.html'
+    'https://www.basketball-reference.com/players/d/davisan02.html'
+    'https://www.basketball-reference.com/players/i/irvinky01.html'
+    'https://www.basketball-reference.com/players/w/walljo01.html'
+    'https://www.basketball-reference.com/players/g/griffbl01.html'
+    'https://www.basketball-reference.com/players/r/rosede01.html'
+    'https://www.basketball-reference.com/players/o/odengr01.html'
+    'https://www.basketball-reference.com/players/b/bargnan01.html'
+    'https://www.basketball-reference.com/players/b/bogutan01.html'
+    'https://www.basketball-reference.com/players/h/howardw01.html'
+    'https://www.basketball-reference.com/players/j/jamesle01.html'
+    'https://www.basketball-reference.com/players/m/mingya01.html'
+    'https://www.basketball-reference.com/players/b/brownkw01.html'
+    'https://www.basketball-reference.com/players/m/martike01.html'
+    'https://www.basketball-reference.com/players/b/brandel01.html'
+    'https://www.basketball-reference.com/players/o/olowomi01.html'
+    'https://www.basketball-reference.com/players/d/duncati01.html'
+    'https://www.basketball-reference.com/players/i/iversal01.html'
+    'https://www.basketball-reference.com/players/s/smithjo02.html'
+    'https://www.basketball-reference.com/players/r/robingl01.html'
+    'https://www.basketball-reference.com/players/w/webbech01.html'
+    'https://www.basketball-reference.com/players/o/onealsh01.html'
+    'https://www.basketball-reference.com/players/j/johnsla02.html'
+    'https://www.basketball-reference.com/players/c/colemde01.html'
+    'https://www.basketball-reference.com/players/e/ellispe01.html'
+    'https://www.basketball-reference.com/players/m/mannida01.html'
+    'https://www.basketball-reference.com/players/r/robinda01.html'
+    'https://www.basketball-reference.com/players/d/daughbr01.html'
+    'https://www.basketball-reference.com/players/e/ewingpa01.html'
+    'https://www.basketball-reference.com/players/o/olajuha01.html'
+    'https://www.basketball-reference.com/players/s/sampsra01.html'
+    'https://www.basketball-reference.com/players/w/worthja01.html'
+    'https://www.basketball-reference.com/players/a/aguirma01.html'
+    'https://www.basketball-reference.com/players/c/carrojo01.html'
+    'https://www.basketball-reference.com/players/j/johnsma02.html'
+    'https://www.basketball-reference.com/players/t/thompmy01.html'
+    'https://www.basketball-reference.com/players/b/bensoke01.html'
+    'https://www.basketball-reference.com/players/l/lucasjo01.html'
+    'https://www.basketball-reference.com/players/t/thompda01.html'
+    'https://www.basketball-reference.com/players/w/waltobi01.html'
+    'https://www.basketball-reference.com/players/c/collido01.html'
+    'https://www.basketball-reference.com/players/m/martila01.html'
+    'https://www.basketball-reference.com/players/c/carrau01.html'
+    'https://www.basketball-reference.com/players/l/laniebo01.html'
+    'https://www.basketball-reference.com/players/a/abdulka01.html'
+    'https://www.basketball-reference.com/players/h/hayesel01.html'
+    'https://www.basketball-reference.com/players/w/walkeji01.html'
+    'https://www.basketball-reference.com/players/r/russeca01.html'
+    'https://www.basketball-reference.com/players/h/hetzefr01.html'
+    'https://www.basketball-reference.com/players/b/barneji01.html'
+    'https://www.basketball-reference.com/players/h/heymaar01.html'
+    'https://www.basketball-reference.com/players/m/mcgilbi01.html'
+    'https://www.basketball-reference.com/players/b/bellawa01.html'
+    'https://www.basketball-reference.com/players/r/roberos01.html'
+    'https://www.basketball-reference.com/players/b/boozebo01.html'
+    'https://www.basketball-reference.com/players/b/bayloel01.html'
+    'https://www.basketball-reference.com/players/h/hundlho01.html'
+    'https://www.basketball-reference.com/players/g/greensi01.html'
+    'https://www.basketball-reference.com/players/r/rickedi01.html'
+    'https://www.basketball-reference.com/players/s/selvyfr01.html'
+    'https://www.basketball-reference.com/players/b/becker01.html'
+    'https://www.basketball-reference.com/players/w/workmma01.html'
+    'https://www.basketball-reference.com/players/m/melchge01.html'
+    'https://www.basketball-reference.com/players/s/sharech01.html'
+    'https://www.basketball-reference.com/players/s/shannho01.html'
+    'https://www.basketball-reference.com/players/t/tonkoan01.html'
+    'https://www.basketball-reference.com/players/m/mcneecl01.html'
+]
 
-print(res.get_text())
+# elements = soup.find(data-stat_ == 'college_name')
+
+
+for player in player_stats_url:
+    response = requests.get(
+        'https://www.basketball-reference.com/players/b/banchpa01.html')
+    html_content = response.text
+    soup = BeautifulSoup(html_content, "html.parser")
+    player_name = soup.find('h1')
+    player_points = soup.find('td', attrs={"data-stat": 'pts_per_g'})
+    player_rebounds = soup.find('td', attrs={"data-stat": 'trb_per_g'})
+    player_assists = soup.find('td', attrs={"data-stat": "ast_per_g"})
+    if player_points is not None:
+        points_number = float(player_points.text)
+        rebounds_number = float(player_rebounds.text)
+        assists_number = float(player_assists.text)
+        total_number = points_number + rebounds_number + assists_number
+        print(f"{player_name.text} Average Points Per Game - {points_number}; Average Rebounds Per Game - {rebounds_number}; Average Assists Per Game - {assists_number}; Total: {total_number}")
+    else:
+        print("Player data not found")
+
+
+'''
+Testing for small goal 
+
+College = soup.find_all("td", attrs={"data-stat": "college_name"})
+Duke = soup.find_all("a", string="Duke")
+LSU = soup.find_all("a", string="LSU")
+
+for Player in Duke:
+    href = Player.get(
+        "https://www.basketball-reference.com/friv/draft.fcgi?college=duke")
+    text = Player.get_text()
+    print("Duke")
+
+
+for Player in LSU:
+    href = Player.get(
+        "https://www.basketball-reference.com/friv/draft.fcgi?college=lsu")
+    text = Player.get_text()
+    print("LSU")
+
+
+print(table.get_text())
+
+'''
