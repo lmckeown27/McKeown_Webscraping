@@ -7,15 +7,23 @@ Small goal: Organize #1 draft picks by college
 
 Reach goal: Organize draft picks by combination of points, rebounds, and assists 
 '''
+# Creates the "sleep" function to give a cooldown between accessing websites
 import time
 from time import sleep
+# Allows HTTP data to be retrieved
 import requests
+# In addition to requests, gives multiple ways of retrieving data from websites
 from bs4 import BeautifulSoup
 
 res = requests.get("https://www.basketball-reference.com/draft/")
+# Parses HTML content; breaks down HTML content to be understood by data
 soup = BeautifulSoup(res.text, "html.parser")
+# Puts the data from the above ^ website into a visible table rather than a jumble of words/letters
 table = soup.table
 
+# First website above ^ allowed me to test webscraping (at the very bottom)
+# These websites v are the ones I am webscraping for my final project to be submitted
+# Put all of the websites into an object so that they can be iterated
 player_stats_url = [
     'https://www.basketball-reference.com/players/b/banchpa01.html'
     'https://www.basketball-reference.com/players/c/cunnica01.html'
@@ -94,27 +102,35 @@ player_stats_url = [
     'https://www.basketball-reference.com/players/t/tonkoan01.html'
 ]
 
-# elements = soup.find(data-stat_ == 'college_name')
-
+# Created a for loop to parse each part of data I need
 for player in player_stats_url:
+    # Each for loop can only handle one website at a time, so I had to create several for loops
     response = requests.get(
         'https://www.basketball-reference.com/players/b/banchpa01.html')
     html_content = response.text
     soup = BeautifulSoup(html_content, "html.parser")
+    # Soup.find finds the specific HTML tags I need
     player_name = soup.find('h1')
     player_points = soup.find('td', attrs={"data-stat": 'pts_per_g'})
     player_rebounds = soup.find('td', attrs={"data-stat": 'trb_per_g'})
     player_assists = soup.find('td', attrs={"data-stat": "ast_per_g"})
+    # Sleep function allows the website to load in real time
     sleep(2)
     if player_points is not None:
+        # Convert the text into a float so that stats can be added into a total number
         points_number = float(player_points.text)
         rebounds_number = float(player_rebounds.text)
         assists_number = float(player_assists.text)
         total_number = points_number + rebounds_number + assists_number
+        # f-string allows both strings and floats to be printed at the same time
         print(f"{player_name.text} Average Points Per Game - {points_number}; Average Rebounds Per Game - {rebounds_number}; Average Assists Per Game - {assists_number}; Total: {total_number}")
     else:
+        # Print statement appears when code is not working
+        # Helped me realize that I need to let the website load
         print("Player data not found")
 
+# Every for loop is coded the exact same way
+# The only exception being a different website link in requests.get
 for player in player_stats_url:
     response = requests.get(
         'https://www.basketball-reference.com/players/c/cunnica01.html')
@@ -1449,6 +1465,7 @@ for player in player_stats_url:
 '''
 Testing for small goal 
 
+# find.all would find every instance of an HTML tag 
 College = soup.find_all("td", attrs={"data-stat": "college_name"})
 Duke = soup.find_all("a", string="Duke")
 LSU = soup.find_all("a", string="LSU")
@@ -1456,6 +1473,7 @@ LSU = soup.find_all("a", string="LSU")
 for Player in Duke:
     href = Player.get(
         "https://www.basketball-reference.com/friv/draft.fcgi?college=duke")
+    # get_text would get rid of the surrounding data and isolate the text itself 
     text = Player.get_text()
     print("Duke")
 
